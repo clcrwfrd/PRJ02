@@ -6,19 +6,26 @@
 
 LargeIntegers::LargeIntegers()
 {
-	//IntArray1[10] =  {0};
-	//IntArray2[10] =  {0};
-	//IntArray3[10] =  {0};
-
+	
 	array<int, 10> IntArray1 = { 0 };
 	array<int, 10> IntArray2 = { 0 };
 	array<int, 10> IntArray3 = { 0 };
+	
+	ptr_Input	= &Input;
+	//ptr_Size  = &Input.length();
+	Continue	= true;
+	Input		= "";
+	Temp		= "";
+	Count		= 0;
+	TempInt		= 0;
+	LengthOne	= 0;
+	LengthTwo	= 0;
+	GreaterLen  = 0;
+	
+}
+LargeIntegers::LargeIntegers(int Size)
+{
 
-	//test = new int[10]();
-	//test = { 0 };
-	Input = "";
-	ptr_Input = &Input;
-	Count = 0;
 }
 LargeIntegers::~LargeIntegers()
 {
@@ -31,40 +38,35 @@ void LargeIntegers::SetNumber1()
 	cout << "\nEnter number 1 > ";
 	cin  >> Input;
 	cout << endl
-		 << "You entered: "
 		 << *ptr_Input
 		 << endl;
-								//lot of forum searching to get this to 
-	string Controller(Input);	//to work for some reason
-	std::transform(Controller.begin(), Controller.end(), Controller.begin(),
-		std::ptr_fun<int, int>(std::tolower));
 
-	if (Controller == "exit" || Controller == "\\q")
-		Continue = false;
-	else
-	{
-		Continue = true;
+	string Controller(Input);	
+	if ((Continue = ContinueLoop(Controller)))
 		StoreIntoArrayOne(ptr_Input);
-	}
+
 }
 void LargeIntegers::SetNumber2()
 {
 	cout << "\nEnter number 2 > ";
 	cin  >> Input;
 	cout << endl
-		 << "You entered: "
 		 << *ptr_Input
 		 << endl;
 	StoreIntoArrayTwo(ptr_Input);
 }
 void LargeIntegers::StoreIntoArrayOne(string* Input)
 {
-	LengthOne = (*Input).length();
+	int TempSize = (*Input).length();	//I know theres a better way...
+	ptr_Size = &TempSize;
+	//ptr_Size  = (&Input)->length();
+	//ptr_Size  = Input.length();
+	//LengthOne = (*Input).length();
 	
 				//wish use back inserter l8er
-	for (int i = LengthOne; i < 10; i++)
+	for (int i = (*ptr_Size); i < 10; i++)
 	{
-		if (Count < LengthOne)
+		if (Count < (*ptr_Size))
 		{
 			Temp	= (*Input).at(Count);
 			TempInt = atoi(Temp.c_str());
@@ -74,30 +76,32 @@ void LargeIntegers::StoreIntoArrayOne(string* Input)
 			TempInt = 0;
 
 		IntArray1[i] = TempInt;
-		
 	}
 	Count = 0;
 }
 void LargeIntegers::StoreIntoArrayTwo(string* Input)
 {
-	LengthTwo = (*Input).length();
+	int TempSize = (*Input).length();	//I know theres a better way...
+	ptr_Size = &TempSize;
+	//ptr_Size = (*Input).length;
+	//LengthTwo = (*Input).length();
 	
-	for (int i = LengthTwo; i < 10; i++)
+	for (int i = (*ptr_Size); i < 10; i++)
 	{
-		if (Count < LengthTwo)
+		if (Count < (*ptr_Size))
 		{
-			Temp = (*Input).at(Count);
-			TempInt = atoi(Temp.c_str());
+			Temp	 = (*Input).at(Count);
+			TempInt  = atoi(Temp.c_str());
 			Count++;
 		}
 		else
-			TempInt = 0;
+			TempInt  = 0;
 		IntArray2[i] = TempInt;
 		
 	}
 	Count = 0;
 }
-void LargeIntegers::CalcSum()
+void LargeIntegers::CalcSum()		//can i use ptr_size for greater?
 {
 	for (int i = GreaterLen; i < 10; i++)
 	{
@@ -132,25 +136,23 @@ void LargeIntegers::EchoAll()
 	}
 
 	/*
-	cout << "\Num one \t"		//This printed the arrays
-	 	 << "Num Two \t"		//from top to bottom, and 
-		 << "Sum"				//side by side
-		 << endl;
 	for (int i = 0; i < 10; i++)
 	{
-		cout << "\t"
-			 << IntArray1[i] << "\t\t"
-			 << IntArray2[i] << "\t\t"
-			 << IntArray3[i]
-			 << endl;
+		cout << *(IntArray1 + i) << endl;
 	}
 	*/
-	/*
-	for (int i = 0; i < 10; i++)
-	{
-		cout << *(test + i) << endl;
-	}
-	*/
+}
+bool LargeIntegers::ContinueLoop(string Controller)
+{
+	std::transform(Controller.begin(),
+		Controller.end(),
+		Controller.begin(),
+		std::ptr_fun<int, int>(std::tolower));
+	if (Controller == "exit" || Controller == "\\q")
+		return false;
+	else
+		return true;
+
 }
 
 //Public
@@ -159,8 +161,7 @@ void LargeIntegers::Run()
 {
 	do
 	{
-		cout << "\n\tType 'exit' or '\\q' to quit program"
-			 << "\n\tInitiating run sequence"
+		cout << "\n\t\tType 'exit' or '\\q' to quit program"
 			 << endl;
 
 		SetNumber1();
@@ -169,6 +170,7 @@ void LargeIntegers::Run()
 		CalcSum();
 		EchoAll();
 
+		cout << "\n\t\tPress any key to continue...";
 		_getch();
 		system("cls");
 	} while (Continue == true);
