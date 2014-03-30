@@ -14,9 +14,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	LargeIntegers largeIntegers;
 	largeIntegers.Run();
 	
-	system("cls");
-	cout << "\n\n\t\tPress any key to exit...";
-	_getch();
+	
 	return 0;
 }
 

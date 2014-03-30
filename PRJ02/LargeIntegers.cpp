@@ -6,13 +6,8 @@
 
 LargeIntegers::LargeIntegers()
 {
-	
-	array<int, 10> IntArray1 = { 0 };
-	array<int, 10> IntArray2 = { 0 };
-	array<int, 10> IntArray3 = { 0 };
-	
+		
 	ptr_Input	= &Input;
-	//ptr_Size  = &Input.length();
 	Continue	= true;
 	Input		= "";
 	Temp		= "";
@@ -23,12 +18,8 @@ LargeIntegers::LargeIntegers()
 	GreaterLen  = 0;
 	
 }
-LargeIntegers::LargeIntegers(int Size)
-{
-
-}
 LargeIntegers::~LargeIntegers()
-{
+{	
 }
 
 //private
@@ -43,7 +34,7 @@ void LargeIntegers::SetNumber1()
 
 	string Controller(Input);	
 	if ((Continue = ContinueLoop(Controller)))
-		StoreIntoArrayOne(ptr_Input);
+		StoreIntoArrayOne(Input);
 
 }
 void LargeIntegers::SetNumber2()
@@ -53,22 +44,20 @@ void LargeIntegers::SetNumber2()
 	cout << endl
 		 << *ptr_Input
 		 << endl;
-	StoreIntoArrayTwo(ptr_Input);
+	StoreIntoArrayTwo(Input);
 }
-void LargeIntegers::StoreIntoArrayOne(string* Input)
+void LargeIntegers::StoreIntoArrayOne(string Input)
 {
-	int TempSize = (*Input).length();	//I know theres a better way...
-	ptr_Size = &TempSize;
-	//ptr_Size  = (&Input)->length();
-	//ptr_Size  = Input.length();
-	//LengthOne = (*Input).length();
+	std::reverse(Input.begin(), Input.end());											
+	LengthOne	 = Input.length();	
+	Size		 = Input.length();											
+	IntArray1	 = new int[Size + 1] {0};
 	
-				//wish use back inserter l8er
-	for (int i = (*ptr_Size); i < 10; i++)
+	for (int i = Size - 1; i >= 0; i--)
 	{
-		if (Count < (*ptr_Size))
+		if (Count < Size)
 		{
-			Temp	= (*Input).at(Count);
+			Temp	= Input.at(Count);
 			TempInt = atoi(Temp.c_str());
 			Count++;
 		}
@@ -79,34 +68,39 @@ void LargeIntegers::StoreIntoArrayOne(string* Input)
 	}
 	Count = 0;
 }
-void LargeIntegers::StoreIntoArrayTwo(string* Input)
+void LargeIntegers::StoreIntoArrayTwo(string Input)
 {
-	int TempSize = (*Input).length();	//I know theres a better way...
-	ptr_Size = &TempSize;
-	//ptr_Size = (*Input).length;
-	//LengthTwo = (*Input).length();
-	
-	for (int i = (*ptr_Size); i < 10; i++)
+	std::reverse(Input.begin(), Input.end());														
+	LengthTwo	 = Input.length();	
+	Size		 = Input.length();												
+	IntArray2	 = new int[Size + 1] {0};
+
+	for (int i = Size - 1; i >= 0; i--)
 	{
-		if (Count < (*ptr_Size))
+		if (Count < Size)
 		{
-			Temp	 = (*Input).at(Count);
+			Temp	 = Input.at(Count);
 			TempInt  = atoi(Temp.c_str());
 			Count++;
 		}
 		else
 			TempInt  = 0;
-		IntArray2[i] = TempInt;
-		
+		IntArray2[i] = TempInt;		
 	}
 	Count = 0;
 }
-void LargeIntegers::CalcSum()		//can i use ptr_size for greater?
+void LargeIntegers::CalcSum()	
 {
-	for (int i = GreaterLen; i < 10; i++)
+	(LengthOne >= LengthTwo)   ?
+		GreaterLen = LengthOne :
+		GreaterLen = LengthTwo;
+	IntArray3 = new int[GreaterLen + 1] {0};
+
+	for (int i = GreaterLen - 1; i >= 0; i--) 
 	{
 		if (((IntArray1[i] + IntArray2[i]) / 10) == 1)
-			IntArray3[i]++;
+			IntArray3[i - 1]++;
+
 		IntArray3[i] =
 			(IntArray1[i] + IntArray2[i]) % 10;	
 	}
@@ -115,32 +109,28 @@ void LargeIntegers::EchoAll()
 {	
 	cout << "\n\t"
 		 << "Number One: ";
-	for (int i = LengthOne; i < 10; i++){
+	for (int i = LengthOne - 1; i >= 0; i--){
 
 		cout << IntArray1[i];
 	}
 	
 	cout << "\n\t"
 		 << "Number Two: ";
-	for (int i = LengthTwo; i < 10; i++){
+	for (int i = LengthTwo - 1; i >= 0; i--){
 		cout << IntArray2[i];
 	}
-	
-	(LengthOne >= LengthTwo)   ?	//<<==Wont need l8r
-		GreaterLen = LengthOne : 
-		GreaterLen = LengthTwo;
+
 	cout << "\n\t   "
 		 << "The Sum: ";
-	for (int i = GreaterLen; i < 10; i++){
+	for (int i = GreaterLen - 1; i >= 0; i--){
 		cout << IntArray3[i];
 	}
-
-	/*
-	for (int i = 0; i < 10; i++)
-	{
-		cout << *(IntArray1 + i) << endl;
-	}
-	*/
+}
+void LargeIntegers::DeleteAll()
+{
+	delete[] IntArray1;
+	delete[] IntArray2;
+	delete[] IntArray3;
 }
 bool LargeIntegers::ContinueLoop(string Controller)
 {
@@ -169,10 +159,11 @@ void LargeIntegers::Run()
 		SetNumber2();
 		CalcSum();
 		EchoAll();
+		DeleteAll();
 
 		cout << "\n\t\tPress any key to continue...";
 		_getch();
 		system("cls");
-	} while (Continue == true);
 
+	} while (Continue == true);
 }

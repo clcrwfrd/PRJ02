@@ -11,25 +11,21 @@
 #include <iomanip>
 #include <conio.h>
 using namespace std;
-/*
-struct MyArrays
-{
-	array<int, 10> IntArray1;
-	array<int, 10> IntArray2;
-	array<int, 10> IntArray3;
-}; */
 
 class LargeIntegers
 {
 private:
-	array<int, 10> IntArray1;
-	array<int, 10> IntArray2;
-	array<int, 10> IntArray3;
-	
+	//array<int, 10> IntArray1;
+	//array<int, 10> IntArray2;
+	//array<int, 10> IntArray3;
+	int* IntArray1;
+	int* IntArray2;
+	int* IntArray3;
+
 	string		Input;
 	string		Temp;
 	string*		ptr_Input;
-	int*		ptr_Size;
+	int			Size;
 	int			TempInt;
 	int			Count; 
 	int			LengthOne;
@@ -42,15 +38,15 @@ private:
 	int  GetNumber1();
 	int  GetNumber2();
 
-	void StoreIntoArrayOne(string* Input);
-	void StoreIntoArrayTwo(string* Input);
+	void StoreIntoArrayOne(string Input);
+	void StoreIntoArrayTwo(string Input);
 	void CalcSum();
 	void EchoAll();
+	void DeleteAll();
 	bool ContinueLoop(string Controller);
 
 public:
 	LargeIntegers();
-	LargeIntegers(int Size);
 	~LargeIntegers();
 
 	void Run();
